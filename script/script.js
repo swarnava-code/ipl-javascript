@@ -1,32 +1,31 @@
 import fs from 'fs';
-var matches = fs.readFileSync("./csv/matches.csv", "utf8");
-var matches_data = matches.split("\r\n");
-
+var matchesFile = fs.readFileSync("./csv/matches.csv", "utf8");
+var matchesData = matchesFile.split("\r\n");
+const ID = 0,
+    SEASON = 1,
+    CITY = 2,
+    DATE = 3,
+    TEAM1 = 4,
+    TEAM2 = 5,
+    TOSS_WINNER = 6,
+    TOSS_DECISION = 7,
+    RESULT = 8,
+    DL_APPLIED = 9,
+    WINNER = 10,
+    WIN_BY_RUNS = 11,
+    WIN_BY_WICKETS = 12,
+    PLAYER_OF_MATCH = 13,
+    VENUE = 14,
+    UMPIRE1 = 15,
+    UMPIRE2 = 16,
+    UMPIRE3 = 17;
 let match = new Array(10);
-
-var x = new Array(matches_data.length - 1);
-for (var i = 1; i < matches_data.length - 1; i++) {
-    let row = matches_data[i].split(',');
-    match.id = row[0];
-    match.season = row[1];
-    match.city = row[2];
-
-    x[i] = new Array(3);
-    x[i][0] = row[0];
-    x[i][1] = row[1];
-    x[i][2] = row[2];
-
-    console.log(row[0] + ":" + row[1] + ":" + row[2] + ":");
-
+var matchesData2d = new Array(matchesData.length - 1);
+for (var i = 1; i < matchesData.length - 1; i++) {
+    let row = matchesData[i].split(',');
+    matchesData2d[i] = new Array(3);
+    for (var col = 0; col <= 17; col++) {
+        matchesData2d[i][col] = row[col];
+    }
 }
-
-console.log("print:\n" + x);
-
-
-
-// console.log(myFunction());
-// const reader = new FileReader();
-// reader.onload = function(event) {
-//     console.log(event.target.result); // the CSV content as string
-// };
-// reader.readAsText(file);
+console.log(matchesData2d[1][CITY]);
