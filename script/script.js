@@ -32,10 +32,9 @@ function makingMatches() {
     }
 }
 
-const numberOfMatchesPlayedPerYearMap = new Map();
-
 function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
-    for (var i = 1; i < matchesData.length - 1; i++) {
+    const numberOfMatchesPlayedPerYearMap = new Map();
+    for (var i = 1; i < matchesData2d.length - 1; i++) {
         //console.log(matchesData2d[i][CITY]);
         var key = matchesData2d[i][SEASON];
         if (numberOfMatchesPlayedPerYearMap.has(key)) {
@@ -49,5 +48,39 @@ function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
     console.log(numberOfMatchesPlayedPerYearMap);
 }
 
+function printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL() {
+    const trackNoOfMatchesWinByTeamMap = new Map();
+    var winner = "";
+    var count = 0;
+    for (var i = 1; i < matchesData2d.length - 1; i++) {
+        winner = matchesData2d[i][WINNER];
+        if (trackNoOfMatchesWinByTeamMap.has(winner)) {
+            trackNoOfMatchesWinByTeamMap.set(winner, trackNoOfMatchesWinByTeamMap.get(winner) + 1);
+        } else {
+            trackNoOfMatchesWinByTeamMap.set(winner, 1);
+        }
+    }
+    console.log(trackNoOfMatchesWinByTeamMap);
+}
+
+// private static void printNumberOfMatchesWonOfAllTeam(List<Match> matches){
+//     HashMap<String, Integer> trackNoOfMatchesWinByTeam = new HashMap<String, Integer>();
+//     String winner = "";
+//     for (Match match : matches){
+//         winner = match.getWinner();
+//         if (trackNoOfMatchesWinByTeam.containsKey(winner)){
+//             trackNoOfMatchesWinByTeam.put(winner, trackNoOfMatchesWinByTeam.get(winner)+1);
+//         } else{
+//             trackNoOfMatchesWinByTeam.put(winner, 1);
+//         }
+//     }
+//     trackNoOfMatchesWinByTeam.remove("");
+//     System.out.println(
+//             "\n2.) Number of matches won of all teams over all the years of IPL. : \n"
+//                     +trackNoOfMatchesWinByTeam);
+// }
+
+
 makingMatches();
 printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
+printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
