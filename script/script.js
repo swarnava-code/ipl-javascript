@@ -1,6 +1,7 @@
 import fs from 'fs';
 var matchesFile = fs.readFileSync("./csv/matches.csv", "utf8");
 var matchesData = matchesFile.split("\r\n");
+var matchesData2d = new Array(matchesData.length - 1);
 const ID = 0,
     SEASON = 1,
     CITY = 2,
@@ -19,18 +20,45 @@ const ID = 0,
     UMPIRE1 = 15,
     UMPIRE2 = 16,
     UMPIRE3 = 17;
-let match = new Array(10);
-var matchesData2d = new Array(matchesData.length - 1);
 
 function makingMatches() {
-    for (var i = 1; i < matchesData.length - 1; i++) {
-        let row = matchesData[i].split(',');
-        matchesData2d[i] = new Array(3);
-        for (var col = 0; col <= 17; col++) {
-            matchesData2d[i][col] = row[col];
-        }
+    for (var i = 1; i < matchesData.length - 1; i++)
+        matchesData2d[i] = matchesData[i].split(',');
+}
+
+var deliveriesFile = fs.readFileSync("./csv/deliveries.csv", "utf8");
+var deliveriesData = deliveriesFile.split("\r\n");
+
+var deliveriesData2d = new Array(deliveriesData.length - 1);
+const MATCH_ID = 0,
+    INNING = 1,
+    BATTING_TEAM = 2,
+    BOWLING_TEAM = 3,
+    OVER = 4,
+    BALL = 5,
+    BATSMAN = 6,
+    NON_STRIKER = 7,
+    BOWLER = 8,
+    IS_SUPER_OVER = 9,
+    WIDE_RUNS = 10,
+    BYE_RUNS = 11,
+    LEGBYE_RUNS = 12,
+    NOBALL_RUNS = 13,
+    PENALTY_RUNS = 14,
+    BATSMAN_RUNS = 15,
+    EXTRA_RUNS = 16,
+    TOTAL_RUNS = 17,
+    PLAYER_DISMISSED = 18,
+    DISMISSAL_KIND = 19,
+    FIELDER = 20;
+
+function makingDeliveries() {
+    for (var i = 1; i < deliveriesData.length - 1; i++) {
+        //let row2 = deliveriesData[i].split(',');
+        deliveriesData2d[i] = deliveriesData[i].split(',')
     }
 }
+
 
 function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
     const numberOfMatchesPlayedPerYearMap = new Map();
@@ -48,6 +76,8 @@ function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
     console.log(numberOfMatchesPlayedPerYearMap);
 }
 
+
+
 function printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL() {
     const trackNoOfMatchesWinByTeamMap = new Map();
     var winner = "";
@@ -63,24 +93,8 @@ function printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL() {
     console.log(trackNoOfMatchesWinByTeamMap);
 }
 
-// private static void printNumberOfMatchesWonOfAllTeam(List<Match> matches){
-//     HashMap<String, Integer> trackNoOfMatchesWinByTeam = new HashMap<String, Integer>();
-//     String winner = "";
-//     for (Match match : matches){
-//         winner = match.getWinner();
-//         if (trackNoOfMatchesWinByTeam.containsKey(winner)){
-//             trackNoOfMatchesWinByTeam.put(winner, trackNoOfMatchesWinByTeam.get(winner)+1);
-//         } else{
-//             trackNoOfMatchesWinByTeam.put(winner, 1);
-//         }
-//     }
-//     trackNoOfMatchesWinByTeam.remove("");
-//     System.out.println(
-//             "\n2.) Number of matches won of all teams over all the years of IPL. : \n"
-//                     +trackNoOfMatchesWinByTeam);
-// }
-
 
 makingMatches();
+makingDeliveries();
 printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
 printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
