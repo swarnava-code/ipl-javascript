@@ -21,11 +21,33 @@ const ID = 0,
     UMPIRE3 = 17;
 let match = new Array(10);
 var matchesData2d = new Array(matchesData.length - 1);
-for (var i = 1; i < matchesData.length - 1; i++) {
-    let row = matchesData[i].split(',');
-    matchesData2d[i] = new Array(3);
-    for (var col = 0; col <= 17; col++) {
-        matchesData2d[i][col] = row[col];
+
+function makingMatches() {
+    for (var i = 1; i < matchesData.length - 1; i++) {
+        let row = matchesData[i].split(',');
+        matchesData2d[i] = new Array(3);
+        for (var col = 0; col <= 17; col++) {
+            matchesData2d[i][col] = row[col];
+        }
     }
 }
-console.log(matchesData2d[1][CITY]);
+
+const numberOfMatchesPlayedPerYearMap = new Map();
+
+function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
+    for (var i = 1; i < matchesData.length - 1; i++) {
+        //console.log(matchesData2d[i][CITY]);
+        var key = matchesData2d[i][SEASON];
+        if (numberOfMatchesPlayedPerYearMap.has(key)) {
+            var val = numberOfMatchesPlayedPerYearMap.get(key);
+            val++;
+            numberOfMatchesPlayedPerYearMap.set(key, val);
+        } else {
+            numberOfMatchesPlayedPerYearMap.set(key, 1);
+        }
+    }
+    console.log(numberOfMatchesPlayedPerYearMap);
+}
+
+makingMatches();
+printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
