@@ -28,7 +28,6 @@ function makingMatches() {
 
 var deliveriesFile = fileSystem.readFileSync("./csv/deliveries.csv", "utf8");
 var deliveriesData = deliveriesFile.split("\r\n");
-
 var deliveriesData2d = new Array(deliveriesData.length - 1);
 const MATCH_ID = 0,
     INNING = 1,
@@ -58,7 +57,6 @@ function makingDeliveries() {
         deliveriesData2d[i] = deliveriesData[i].split(',')
     }
 }
-
 
 function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
     const numberOfMatchesPlayedPerYearMap = new Map();
@@ -93,21 +91,17 @@ function printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL() {
 
 function printTheExtraRunsConcededPerTeamForParticularYear(targetYear) {
     const listOfIdAndWinner = new Map();
-
     var winner = "";
     var countExtraRun = 0,
         extraRun = 0;
     var matchId;
-
     for (var rowNo = 1; rowNo < matchesData2d.length - 1; rowNo++) {
         var season = matchesData2d[rowNo][SEASON];
         if (season == (targetYear)) {
             listOfIdAndWinner.set(matchesData2d[rowNo][ID], matchesData2d[rowNo][WINNER]);
         }
     }
-
     const trackExtraRun = new Map();
-
     for (var rowNo = 1; rowNo < deliveriesData2d.length - 1; rowNo++) {
         const matchId = deliveriesData2d[rowNo][MATCH_ID];
 
@@ -122,16 +116,56 @@ function printTheExtraRunsConcededPerTeamForParticularYear(targetYear) {
         }
         countExtraRun += extraRun;
     }
-
     console.log(trackExtraRun);
-
-
-
 }
 
+function printTheTopEconomicalBowlersForParticularYear(targetYear) {
+    const IdList = new Set();
+    const bowlersOverAndRun = new Map();
+    const bowlersEconomy = new Map();
+    var bowler = "";
+    var over, run;
+    var year, id;
+    for (var rowNo = 1; rowNo < matchesData2d.length - 1; rowNo++) {
+        year = matchesData2d[rowNo][SEASON];
+        if (year == targetYear) {
+            IdList.add(matchesData2d[rowNo][ID]);
+        }
+    }
+    for (var rowNo = 1; rowNo < deliveriesData2d.length - 1; rowNo++) {
+        id = deliveriesData2d[rowNo][MATCH_ID];
+        if (IdList.has(id)) {
+            bowler = deliveriesData2d[rowNo][BOWLER];
+            over = parseFloat(deliveriesData2d[rowNo][OVER]);
+            run = parseFloat(deliveriesData2d[rowNo][TOTAL_RUNS]);
+            if (bowlersOverAndRun.has(bowler)) {
+                over += bowlersOverAndRun.get(bowler).get(0);
+                run += bowlersOverAndRun.get(bowler).get(1);
+                var row;
+                row[0] = over;
+                row[1] = run;
+                bowlersOverAndRun.set(bowler, row);
+            } else {
+                var row;
+                row[0] = over;
+                row[1] = run;
+                bowlersOverAndRun.set(bowler, row);
+            }
+        }
+    }
+    for (var rowNo = 1; rowNo < bowlersOverAndRun.length - 1; rowNo++) {
+        var key =
+            bowlersEconomy.set(key, (bowlersOverAndRun.get(key).get(0) / bowlersOverAndRun.get(key).get(1)));
+    }
+    for (var key in bowlersOverAndRun) {
+        bowlersEconomy.set(key, (bowlersOverAndRun.get(key).get(0) / bowlersOverAndRun.get(key).get(1)));
+    }
+    console.log("\n 4.) For the year 2015 get the top economical bowlers. :\n" + bowlersEconomy);
+}
 
 makingMatches();
 makingDeliveries();
 //printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
 //printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
 //printTheExtraRunsConcededPerTeamForParticularYear(2016);
+printTheTopEconomicalBowlersForParticularYear();
