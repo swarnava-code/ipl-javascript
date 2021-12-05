@@ -163,9 +163,23 @@ function printTheTopEconomicalBowlersForParticularYear(targetYear) {
     console.log("\n 4.) For the year 2015 get the top economical bowlers. :\n" + bowlersEconomy);
 }
 
+function printTheWinnersWhoWinInAParticularCityLeastOneTime(targetCity) {
+    var winners = new Set();
+    console.log("\n\n5.) Winners who win in the city: " + targetCity);
+    for (var rowNo = 1; rowNo < matchesData2d.length - 1; rowNo++) {
+        var city = matchesData2d[rowNo][CITY];
+        if (city == targetCity) {
+            winners.set(matchesData2d[rowNo][WINNER]);
+        }
+    }
+    console.log(winners);
+}
+
+
 makingMatches();
 makingDeliveries();
 //printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
 //printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
 //printTheExtraRunsConcededPerTeamForParticularYear(2016);
-printTheTopEconomicalBowlersForParticularYear();
+//printTheTopEconomicalBowlersForParticularYear();
+printTheWinnersWhoWinInAParticularCityLeastOneTime();
