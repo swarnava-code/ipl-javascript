@@ -1,5 +1,5 @@
-import fs from 'fs';
-var matchesFile = fs.readFileSync("./csv/matches.csv", "utf8");
+import fileSystem from 'fs';
+var matchesFile = fileSystem.readFileSync("./csv/matches.csv", "utf8");
 var matchesData = matchesFile.split("\r\n");
 var matchesData2d = new Array(matchesData.length - 1);
 const ID = 0,
@@ -26,7 +26,7 @@ function makingMatches() {
         matchesData2d[i] = matchesData[i].split(',');
 }
 
-var deliveriesFile = fs.readFileSync("./csv/deliveries.csv", "utf8");
+var deliveriesFile = fileSystem.readFileSync("./csv/deliveries.csv", "utf8");
 var deliveriesData = deliveriesFile.split("\r\n");
 
 var deliveriesData2d = new Array(deliveriesData.length - 1);
@@ -76,8 +76,6 @@ function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
     console.log(numberOfMatchesPlayedPerYearMap);
 }
 
-
-
 function printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL() {
     const trackNoOfMatchesWinByTeamMap = new Map();
     var winner = "";
@@ -93,8 +91,47 @@ function printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL() {
     console.log(trackNoOfMatchesWinByTeamMap);
 }
 
+function printTheExtraRunsConcededPerTeamForParticularYear(targetYear) {
+    const listOfIdAndWinner = new Map();
+
+    var winner = "";
+    var countExtraRun = 0,
+        extraRun = 0;
+    var matchId;
+
+    for (var rowNo = 1; rowNo < matchesData2d.length - 1; rowNo++) {
+        var season = matchesData2d[rowNo][SEASON];
+        if (season == (targetYear)) {
+            listOfIdAndWinner.set(matchesData2d[rowNo][ID], matchesData2d[rowNo][WINNER]);
+        }
+    }
+
+    const trackExtraRun = new Map();
+
+    for (var rowNo = 1; rowNo < deliveriesData2d.length - 1; rowNo++) {
+        const matchId = deliveriesData2d[rowNo][MATCH_ID];
+
+        if (listOfIdAndWinner.has(matchId)) {
+            winner = listOfIdAndWinner.get(matchId);
+            extraRun = parseFloat(deliveriesData2d[rowNo][EXTRA_RUNS]);
+            if (trackExtraRun.has(winner))
+                var val = trackExtraRun.get(winner);
+            trackExtraRun.set(winner, (val + extraRun));
+        } else {
+            trackExtraRun.set(winner, 0);
+        }
+        countExtraRun += extraRun;
+    }
+
+    console.log(trackExtraRun);
+
+
+
+}
+
 
 makingMatches();
 makingDeliveries();
-printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
-printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
+//printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
+//printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
+//printTheExtraRunsConcededPerTeamForParticularYear(2016);
