@@ -53,7 +53,6 @@ const MATCH_ID = 0,
 
 function makingDeliveries() {
     for (var i = 1; i < deliveriesData.length - 1; i++) {
-        //let row2 = deliveriesData[i].split(',');
         deliveriesData2d[i] = deliveriesData[i].split(',')
     }
 }
@@ -61,7 +60,6 @@ function makingDeliveries() {
 function printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL() {
     const numberOfMatchesPlayedPerYearMap = new Map();
     for (var i = 1; i < matchesData2d.length - 1; i++) {
-        //console.log(matchesData2d[i][CITY]);
         var key = matchesData2d[i][SEASON];
         if (numberOfMatchesPlayedPerYearMap.has(key)) {
             var val = numberOfMatchesPlayedPerYearMap.get(key);
@@ -178,8 +176,8 @@ function printTheWinnersWhoWinInAParticularCityLeastOneTime(targetCity) {
 
 makingMatches();
 makingDeliveries();
-//printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
-//printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
-//printTheExtraRunsConcededPerTeamForParticularYear(2016);
-//printTheTopEconomicalBowlersForParticularYear();
+printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
+printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
+printTheExtraRunsConcededPerTeamForParticularYear(2016);
+printTheTopEconomicalBowlersForParticularYear();
 printTheWinnersWhoWinInAParticularCityLeastOneTime();
