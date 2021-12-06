@@ -99,18 +99,20 @@ function printTheExtraRunsConcededPerTeamForParticularYear(targetYear) {
             listOfIdAndWinner.set(matchesData2d[rowNo][ID], matchesData2d[rowNo][WINNER]);
         }
     }
+
     const trackExtraRun = new Map();
     for (var rowNo = 1; rowNo < deliveriesData2d.length - 1; rowNo++) {
-        const matchId = deliveriesData2d[rowNo][MATCH_ID];
-
+        var matchId = deliveriesData2d[rowNo][MATCH_ID];
         if (listOfIdAndWinner.has(matchId)) {
             winner = listOfIdAndWinner.get(matchId);
             extraRun = parseFloat(deliveriesData2d[rowNo][EXTRA_RUNS]);
-            if (trackExtraRun.has(winner))
+            if (trackExtraRun.has(winner)) {
+
                 var val = trackExtraRun.get(winner);
-            trackExtraRun.set(winner, (val + extraRun));
-        } else {
-            trackExtraRun.set(winner, 0);
+                trackExtraRun.set(winner, (val + extraRun));
+            } else {
+                trackExtraRun.set(winner, 0);
+            }
         }
         countExtraRun += extraRun;
     }
@@ -120,7 +122,7 @@ function printTheExtraRunsConcededPerTeamForParticularYear(targetYear) {
 function printTheTopEconomicalBowlersForParticularYear(targetYear) {
     const IdList = new Set();
     const bowlersOverAndRun = new Map();
-    const bowlersEconomy = new Map();
+
     var bowler = "";
     var over, run;
     var year, id;
@@ -130,6 +132,7 @@ function printTheTopEconomicalBowlersForParticularYear(targetYear) {
             IdList.add(matchesData2d[rowNo][ID]);
         }
     }
+
     for (var rowNo = 1; rowNo < deliveriesData2d.length - 1; rowNo++) {
         id = deliveriesData2d[rowNo][MATCH_ID];
         if (IdList.has(id)) {
@@ -137,28 +140,26 @@ function printTheTopEconomicalBowlersForParticularYear(targetYear) {
             over = parseFloat(deliveriesData2d[rowNo][OVER]);
             run = parseFloat(deliveriesData2d[rowNo][TOTAL_RUNS]);
             if (bowlersOverAndRun.has(bowler)) {
-                over += bowlersOverAndRun.get(bowler).get(0);
-                run += bowlersOverAndRun.get(bowler).get(1);
+                over += bowlersOverAndRun.get(bowler)[0];
+                run += bowlersOverAndRun.get(bowler)[1];
                 var row;
                 row[0] = over;
                 row[1] = run;
                 bowlersOverAndRun.set(bowler, row);
             } else {
-                var row;
+                var row = [];
                 row[0] = over;
                 row[1] = run;
                 bowlersOverAndRun.set(bowler, row);
             }
         }
     }
-    for (var rowNo = 1; rowNo < bowlersOverAndRun.length - 1; rowNo++) {
-        var key =
-            bowlersEconomy.set(key, (bowlersOverAndRun.get(key).get(0) / bowlersOverAndRun.get(key).get(1)));
-    }
-    for (var key in bowlersOverAndRun) {
-        bowlersEconomy.set(key, (bowlersOverAndRun.get(key).get(0) / bowlersOverAndRun.get(key).get(1)));
-    }
-    console.log("\n 4.) For the year 2015 get the top economical bowlers. :\n" + bowlersEconomy);
+    const bowlersEconomy = new Map();
+    bowlersOverAndRun.forEach(function(value, key) {
+        var div = value[1] / value[0];
+        console.log(key + " => " + div);
+        bowlersEconomy.set(key, div);
+    })
 }
 
 function printTheWinnersWhoWinInAParticularCityLeastOneTime(targetCity) {
@@ -167,7 +168,7 @@ function printTheWinnersWhoWinInAParticularCityLeastOneTime(targetCity) {
     for (var rowNo = 1; rowNo < matchesData2d.length - 1; rowNo++) {
         var city = matchesData2d[rowNo][CITY];
         if (city == targetCity) {
-            winners.set(matchesData2d[rowNo][WINNER]);
+            winners.add(matchesData2d[rowNo][WINNER]);
         }
     }
     console.log(winners);
@@ -179,5 +180,5 @@ makingDeliveries();
 printNumberOfMatchesPlayedPerYearOfAllTheYearsInIPL();
 printNumberOfMatchesWonOfAllTeamsOverAllTheYearsOfIPL();
 printTheExtraRunsConcededPerTeamForParticularYear(2016);
-printTheTopEconomicalBowlersForParticularYear();
-printTheWinnersWhoWinInAParticularCityLeastOneTime();
+printTheTopEconomicalBowlersForParticularYear(2015);
+printTheWinnersWhoWinInAParticularCityLeastOneTime('Kolkata');
